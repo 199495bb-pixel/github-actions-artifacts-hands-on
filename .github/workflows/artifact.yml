@@ -5,8 +5,12 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
+    - name: artifacts
+      uses: actions/upload-artifact@v7.0.1
+      with:
+        path: ./artifacts
     - name: Checkout code
       uses: actions/checkout@v4
 
@@ -18,3 +22,13 @@ jobs:
       with:
         name: hello-artifact
         path: hello.txt
+  download:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v3.1.0
+      with:
+        path: ./artifacts
+    - name: display text
+      run: cat ./artifacts
+    
